@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<robot name="single_joint_actuator" xmlns:xacro="http://ros.org/wiki/xacro">
+   <material name="blue">
+	  <color rgba="0 0 0.8 1"/>
+   </material>
+
+   <material name="green">
+      <color rgba="0.0 0.8 0.0 1.0"/>
+   </material>
+   
+   <material name="red">
+	<color rgba="0.8 0 0 1"/>
+   </material>
+
+   <material name="white">
+	<color rgba="1 1 1 1"/>
+   </material>
+
+   <link name="world">
+   </link>
+ 
+   <joint name="base" type="fixed">
+     <origin rpy="0 0 0" xyz="0 0 0"/>
+     <parent link="world"/>
+     <child link="base_support"/>
+   </joint>
+
+   <link name="base_support">
+   <visual>
+      <geometry>
+         <box size="0.2 0.2 0.2"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    </visual>
+   </link>
+
+   <joint name="fixed_joint_base_to_motor_1" type="fixed">
+     <origin rpy="0 0 0" xyz="0.03 0.08 0.1"/>
+     <parent link="base_support"/>
+     <child link="motor_1"/>
+   </joint>
+
+   <link name="motor_1">
+   <visual>
+      <geometry>
+          <cylinder length="0.04" radius="0.01"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="0 1.5708 0" xyz="0.0 0.0 0.01"/>
+    </visual>
+   </link>
+
+   <joint name="fixed_joint_1" type="fixed">
+     <origin rpy="0 0 0" xyz="0.02 0 0.01"/>
+     <parent link="motor_1"/>
+     <child link="motor_gear_box_1"/>
+   </joint>
+
+   <link name="motor_gear_box_1">
+   <visual>
+      <geometry>
+         <box size="0.05 0.04 0.02"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="0 0 0" xyz="0.025 0 0"/>
+    </visual>
+   </link>
+ 
+   <joint name="joint1" type="revolute">
+     <axis xyz="0 0 1"/>
+     <limit effort="255.0" lower="-3.4" upper="3.4" velocity="0.5"/>
+     <origin rpy="0 0 0" xyz="0.02 0 0.01"/>
+     <parent link="motor_gear_box_1"/>
+     <child link="shaft_1"/>
+   </joint>
+ 
+   <link name="shaft_1">
+   <visual>
+      <geometry>
+         <cylinder length="0.02" radius="0.002"/>
+      </geometry>
+      <material name="green"/>
+      <origin rpy="0 0 0" xyz="0 0 0.01"/>
+    </visual>
+   </link>
+   
+   <joint name="shaft_joint_1" type="fixed">
+     <origin rpy="0 0 0" xyz="0.0 0 0.02"/>
+     <parent link="shaft_1"/>
+     <child link="shaft_bar_1"/>
+   </joint>
+   
+   <link name="shaft_bar_1">
+   <visual>
+      <geometry>
+         <box size="0.05 0.02 0.001"/>
+      </geometry>
+      <material name="blue"/>
+      <origin rpy="0 0 0" xyz="0.015 0 0"/>
+    </visual>
+   </link>
+
+   <joint name="fixed_joint_base_to_motor_2" type="fixed">
+     <origin rpy="0 0 0" xyz="0.03 -0.08 0.1"/>
+     <parent link="base_support"/>
+     <child link="motor_2"/>
+   </joint>
+
+   <link name="motor_2">
+   <visual>
+      <geometry>
+          <cylinder length="0.04" radius="0.01"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="0 1.5708 0" xyz="0.0 0.0 0.01"/>
+    </visual>
+   </link>
+
+   <joint name="fixed_joint_2" type="fixed">
+     <origin rpy="0 0 0" xyz="0.02 0 0.01"/>
+     <parent link="motor_2"/>
+     <child link="motor_gear_box_2"/>
+   </joint>
+
+  <link name="motor_gear_box_2">
+   <visual>
+      <geometry>
+         <box size="0.05 0.04 0.02"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="0 0 0" xyz="0.025 0 0"/>
+    </visual>
+   </link>
+ 
+   <joint name="joint2" type="revolute">
+     <axis xyz="0 0 1"/>
+     <limit effort="255.0" lower="-3.4" upper="3.4" velocity="0.5"/>
+     <origin rpy="0 0 0" xyz="0.02 0 0.01"/>
+     <parent link="motor_gear_box_2"/>
+     <child link="shaft_2"/>
+   </joint>
+ 
+   <link name="shaft_2">
+   <visual>
+      <geometry>
+         <cylinder length="0.02" radius="0.002"/>
+      </geometry>
+      <material name="green"/>
+      <origin rpy="0 0 0" xyz="0 0 0.01"/>
+    </visual>
+   </link>
+   
+   <joint name="shaft_joint_2" type="fixed">
+     <origin rpy="0 0 0" xyz="0.0 0 0.02"/>
+     <parent link="shaft_2"/>
+     <child link="shaft_bar_2"/>
+   </joint>
+   
+   <link name="shaft_bar_2">
+   <visual>
+      <geometry>
+         <box size="0.05 0.02 0.001"/>
+      </geometry>
+      <material name="red"/>
+      <origin rpy="0 0 0" xyz="0.015 0 0"/>
+    </visual>
+   </link>
+ </robot>

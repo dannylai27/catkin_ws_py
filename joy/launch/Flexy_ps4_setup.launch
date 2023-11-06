@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+ 
+ 
+   <node
+        pkg="joy"
+        type="joy_node"
+        name="joy_node"
+   ></node>
+   
+   <node
+        pkg="joy"
+        type="Flexy_joy_vel_control.py"
+        name="joy_vel_control"
+   ></node>
+   
+   <node
+        pkg="joy"
+        type="Flexy_joy_linear_stage.py"
+        name="joy_stepper_control"
+   ></node>
+   <!--
+   <node 
+        pkg="rosbag" 
+        type="record" 
+        name="rosbag_record_diag" 
+        args="record -o /home/cflai/sync_data_y_axis -?-duration=16 -a"
+   ></node>
+   -->
+</launch>

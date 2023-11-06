@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+
+
+   <node
+        pkg="joy"
+        type="joy_node"
+        name="joy_node"
+   ></node>
+
+   <node
+        pkg="joy"
+        type="joy_sub_pub_PID.py"
+        name="joy_motor_comm"
+   ></node>
+
+   <node
+        pkg="joy"
+        type="joy_stepper.py"
+        name="joy_stepper"
+   ></node>
+
+   <node
+        pkg="rosserial_python"
+        type="serial_node.py"
+        name="ArduinoStepper"
+        args="/dev/ttyACM2"
+   ></node>
+    
+    
+</launch>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<launch>
+
+   <node
+        pkg="joy"
+        type="sync_pub_sub.py"
+        name="sync_node"
+   />
+
+
+
+   <node
+           pkg="joy"
+           type="VS_comp_P.py"
+           name="VS_comp_P"
+   />
+
+
+   
+   <node
+           pkg="joy"
+           type="VS_fixed_Jacobian.py"
+           name="VS_fixed_Jacobian"
+   />
+
+   <node
+        pkg="rosbag"
+        type="record"
+        name="rosbag_record_diag"
+        args="record /target_centroid_sync /motors_states_sync /vel_array_sync /desired_trajectory_CV /kp /p_error
+        /target_centroid /motors_states -O /home/cflai/catkin_ws_py/bag_file/VS_exp/x_axis_28102022/pretraining_ocr_40_p_6_k_3_r_val.bag
+        --duration=98"
+   />
+
+
+   <node
+           pkg="joy"
+           type="VS_trajectory_generator.py"
+           name="VS_trajectory_generator"
+   />
+
+</launch>

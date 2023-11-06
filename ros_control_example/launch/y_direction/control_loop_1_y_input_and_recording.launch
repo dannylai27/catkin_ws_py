@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+
+ <arg name="bags_directory" value="/home/lorenzo/Scrivania/catkin_ws_soft_robot_light/src/ros_control_example/bagfiles/2022_03_22"/>
+    
+ <node pkg="rosbag" type="record" name="rosbag_record"
+       args="record -o $(arg bags_directory)/square_wave_a3_mod_a1_no_death_time_x_direction_trial_10 /error_and_data_for_error_computation_test
+"/> 
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a1_f1.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a2_f1.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a3_f1.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a1_f2.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a2_f2.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a3_f2.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a1_f3.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a2_f3.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a3_f3.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_varying_freq_amplitude_a.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_ramp_varying_freq_amplitude_a.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a1_no_death_time.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a2_no_death_time.py" output="screen"/-->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a3_no_death_time.py" output="screen"/-->
+
+  <node name="square_wave_generator" pkg="ros_control_example" type="Y_sss_square_wave_a3_mod_a_no_death_time.py" output="screen"/>
+
+</launch>

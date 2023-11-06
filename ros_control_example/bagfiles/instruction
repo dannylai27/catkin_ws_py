@@ -1,0 +1,47 @@
+lorenzo@lorenzo-Inspiron-5570:~$ cd Scrivania/catkin_ws_soft_robot_test/lorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test$ source devel/setup.sh
+lorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test$ cd src/ros_control_example/bagfiles/2021_11_30/
+lorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test/src/ros_control_example/bagfiles/2021_11_30$ rosbag record -O recording_1 /
+bin/            initrd.img.old  proc/           tmp/
+boot/           lib/            root/           usr/
+cdrom/          lib64/          run/            var/
+dev/            lost+found/     sbin/           vmlinuz
+etc/            media/          snap/           
+home/           mnt/            srv/            
+initrd.img      opt/            sys/            
+lorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test/src/ros_control_example/bagfiles/2021_11_30$ cd ../../..
+lorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test/src$ cd ..
+lorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test$ source devel/setup.sh
+lorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test$ cd src/ros_control_example/bagfiles/2021_11_30/
+
+
+
+^Clorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test/src/ros_corol_example/bagfiles/2021_11_30$ rosbag record -O rec_8_25_Hz_10_cycles /detecting_point /Joint_states_from_arduino_1
+[ INFO] [1638285925.874978254]: Subscribing to /Joint_states_from_arduino_1
+[ INFO] [1638285925.878581773]: Subscribing to /detecting_point
+[ INFO] [1638285925.885834317]: Recording to rec_8_25_Hz_10_cycles.bag.
+^Clorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test/src/ros_corol_example/bagfiles/2021_11_30$ rosbag record -O rec_9_25_Hz_50_cycles /detecting_point /Joint_states_from_arduino_1
+[ INFO] [1638286326.881882970]: Subscribing to /Joint_states_from_arduino_1
+[ INFO] [1638286326.891915548]: Subscribing to /detecting_point
+[ INFO] [1638286326.898823126]: Recording to rec_9_25_Hz_50_cycles.bag.
+^Clorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test/src/ros_corol_example/bagfiles/2021_11_30$ rosbag record -O rec_10_25_Hz_30_cycles /detecting_point /Joint_states_from_arduino_1
+[ INFO] [1638286895.767082231]: Subscribing to /Joint_states_from_arduino_1
+[ INFO] [1638286895.772233197]: Subscribing to /detecting_point
+[ INFO] [1638286895.775870831]: Recording to rec_10_25_Hz_30_cycles.bag.
+^Clorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test/src/ros_corol_example/bagfiles/2021_11_30$ 
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+lorenzo@lorenzo-Inspiron-5570:~$ cd Scrivania/catkin_ws_soft_robot_test/lorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test$ source devel/setup.sh
+^Clorenzo@lorenzo-Inspiron-5570:~/Scrivania/catkin_ws_soft_robot_test/src$ rosruros_control_example square_wave_40_Hz_generator.py 
+
+
+---------------------------------------------------------------------------------------------------------
+
+rosbag record -o rec_10_25_Hz_30_cycles /detecting_point /Joint_states_from_arduino_1
+
+con o al posto di O in automatico al nome che si scrive viene aggiunta data ed ora della registrazione
+
+------------------------------------------------------------------------------------------------
+
+nelle cartelle, denominate con il giorno in cui è stata creata (contiene le registrazioni realizzate quel giorno) si può trovare un file.txt con i commenti sulle caratteristiche della registraione, sul controllore usato, su cosa si voleva andare ad analizzare quel giorno

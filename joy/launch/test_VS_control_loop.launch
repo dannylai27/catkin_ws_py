@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+
+   <node
+           pkg="joy"
+           type="VS_trajectory_generator.py"
+           name="VS_trajectory_generator"
+   />
+
+   <node
+           pkg="joy"
+           type="VS_comp_P.py"
+           name="VS_comp_P"
+   />
+
+
+   
+   <node
+           pkg="joy"
+           type="VS_fixed_Jacobian.py"
+           name="VS_fixed_Jacobian"
+   />
+
+
+</launch>

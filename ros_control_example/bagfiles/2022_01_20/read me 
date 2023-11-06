@@ -1,0 +1,53 @@
+-today we record data using the file launch control_loop_1_y
+
+-we uploaded on arduindo the code Arduino2.ino
+
+-we didn' t run the node of the high level controlle (we used the open loop)
+
+-once the recording was started we ran Y_sss_square_wave_40_hz.py 
+
+-pubblichiamo a 40 Hz la posizione al PID che forzera' per raggiungere l' angolo da noi imposto
+
+un' onda quadra che parte da 0 rad poi passa a 0.7 rad per 10 secondi poi salta a -0.7 per altri 10 secondi e ripete 0.7/-0.7 per 50 volte (50*2*10 s = 1000 s) fatto cio' ritorna fissa a 0 rad
+
+ad ogni nuova registrazione spegnevo ros e rilanciavo tutto da zero
+
+-nelle registrazioni che hanno mod nel nome significa che rispetto alle precedenti ho spostato il bresaglio (quindi diversa posizione relativa telecamera bersaglio, quindi non posso usare la stessa rete?)
+
+NB
+
+HINTS
+
+err_data.data = [pos_in_x,pos_in_y,cam_x,cam_y,error_x,error_y,q_1,q_2,t_sec,t_nsec]
+
+
+
+se usiamo control_loop_1.launch attaccato al motore in basso (che comanda dx-sx) ci serve
+
+#list_cam_x = df_error_and_data['data_2'].tolist()   #salviamo la colonna con header data_2 come una lista
+#list_q_1 = df_error_and_data['data_6'].tolist()
+
+
+se usiamo control_loop_1.launch ma attaccato al motore a dx (che comanda su-giù) ci serve
+
+#list_cam_y = df_error_and_data['data_3'].tolist()   #salviamo la colonna con header data_2 come una lista
+#list_q_1 = df_error_and_data['data_6'].tolist()
+
+
+se usiamo control_loop_1_y.launch attaccato al motore a dx (che comanda su-giù) ci serve
+
+#list_cam_y = df_error_and_data['data_3'].tolist()   #salviamo la colonna con header data_2 come una lista
+#list_q_2 = df_error_and_data['data_7'].tolist()
+
+
+PROBLEMI
+
+-durante la registrazione 1 ad un certo punto il robot è impazzito ed ho dovuto sospendere
+-durante tutte le registrazioni vi sono stati problemi con la telecamera, di solito pubblicava intorno ai 25 Hz (anche se da datasheet danno 30Hz), oggi partiva da 20 Hz per poi decrescere a 15 Hz ed alcune volte sembrava esservi del ritardo e in alcuni momemti ros non rilevava alcun messaggio pubblicato dal nodo della telecamera 
+
+
+
+
+TUTTI I FILE SONO PIENI DI 00000000000000000000000000000000
+NON VI È NULLA, PROBABILMENTE QUALCHE PROBLEMA NEI CODICI 
+

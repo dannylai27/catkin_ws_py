@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+
+   <node
+        pkg="joy"
+        type="VS_PID_sync_messages_pos_cv.py"
+        name="sync_node"
+   ></node>
+
+   <node
+        pkg="rosbag"
+        type="record"
+        name="rosbag_record_diag"
+        args="record -O /home/cflai/catkin_ws_py/bag_file/2023_VS_exp/test/test1.bag --duration=10 -a"
+   ></node>
+
+
+   <node
+        pkg="joy"
+        type="Flexy_auto_pos_control.py"
+        name="auto_control"
+   ></node>
+   
+
+   
+   
+</launch>

@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<launch>
+    
+  <rosparam file="$(find ros_control_example)/config/controllers.yaml" command="load"/>
+  <rosparam file="$(find ros_control_example)/config/joint_limits.yaml" command="load"/>
+
+  <arg name="model" default="$(find ros_control_example)/urdf/single_joint_actuator.urdf.xacro"/>
+  <arg name="gui" default="true" />
+  
+  <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+  <param name="use_gui" value="$(arg gui)"/>
+     
+  <node name="robot_hardware_interface" pkg="ros_control_example" type="single_joint_hardware_interface" output="screen"/>
+  
+  <node name="subscriber_1_py" pkg="ros_control_example" type="joints_receive_from_arduino_1.py" output="screen"/> 
+
+  <node name="subscriber_2_py" pkg="ros_control_example" type="joints_receive_from_arduino_2.py" output="screen"/> 
+
+  <!--node name="CV" pkg="ros_control_example" type="sss_cv_without_buffer_and_with_time.py" output="screen"/-->
+
+  <node name="CV" pkg="ros_control_example" type="cv_with_buffer.py" output="screen"/>
+
+  <!--node name="CV" pkg="ros_control_example" type="sss_testing.py" output="screen"/-->
+
+  <node name="desired_position_generator" pkg="ros_control_example" type="sss_test_input_generator_simulator_synch.py" output="screen"/>
+
+  <!--commentiamo      node name="high_level_controller_synch" pkg="ros_control_example" type="sss_high_level_controller_con_synchronisation_filter.py" output="screen"/      per aprire il loop e calcolare la curva joint-image position			mentre sss_square_wave_40_hz è da attivare solo  loop aperto e se vogliamo dare in input una square wave -->
+
+  <!--node name="square_wave_generator" pkg="ros_control_example" type="sss_square_wave_40_hz.py" output="screen"/-->
+
+  <!--node name="high_level_controller_synch" pkg="ros_control_example" type="sss_high_level_controller_con_synchronisation_filter.py" output="screen"/-->
+
+  <node name="data_collector_for_error_computation_sync" pkg="ros_control_example" type="sss_error_computation_and_input_for_high_level_controller_con_synchronisation_filter.py" output="screen"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" >
+  </node>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ros_control_example)/launch/config.rviz"/>
+      
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+        args="
+		/single_joint_actuator/joints_update
+		/single_joint_actuator/joint1_position_controller
+		/single_joint_actuator/joint2_position_controller
+        "/>
+
+   <node
+        pkg="rosserial_python"
+        type="serial_node.py"
+        name="ArduinoOne"
+        args="/dev/ttyACM0"
+   ></node>
+
+    <node
+        pkg="rosserial_python"
+        type="serial_node.py"
+        name="ArduinoTwo"
+        args="/dev/ttyACM1"
+    ></node>
+</launch>

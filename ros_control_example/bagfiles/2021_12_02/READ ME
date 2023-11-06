@@ -1,0 +1,1 @@
+data recorded to analise if we have the time stamp in the messages we are publishing and if the coincide with the ros time (to do this we save everything, all the topics included rosout)

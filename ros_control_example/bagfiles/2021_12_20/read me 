@@ -1,0 +1,76 @@
+-today we record data using the file launch control_loop_1 in the
+
+ catkin_ws_soft_robot_light_CONTROLLER_WITH_NN_1_MOTOR
+
+-we uploaded on arduindo the code Arduino1.ino
+
+-we didn' t run the node of the high level controller (we used the open loop)
+
+-once the recording was started we ran sss_square_wave_40_hz.py 
+
+-pubblichiamo a 40 Hz la posizione al PID che forzera' per raggiungere l' angolo da noi imposto
+
+un' onda quadra che parte da 0 rad poi passa a 0.7 rad per 10 secondi poi salta a -0.7 per altri 10 secondi e ripete 0.7/-0.7 per 50 volte (50*2*10 s = 1000 s) fatto cio' ritorna fissa a 0 rad (credo 50 cicli)
+
+
+NB
+
+HINTS
+
+err_data.data = [pos_in_x,pos_in_y,cam_x,cam_y,error_x,error_y,q_1,q_2,t_sec,t_nsec]
+
+
+
+1) se usiamo control_loop_1.launch attaccato al motore in basso (che comanda dx-sx) ci serve
+
+#list_cam_x = df_error_and_data['data_2'].tolist()   #salviamo la colonna con header data_2 come una lista
+#list_q_1 = df_error_and_data['data_6'].tolist()
+
+
+2) se usiamo control_loop_1.launch ma attaccato al motore a dx (che comanda su-giù) ci serve
+
+#list_cam_y = df_error_and_data['data_3'].tolist()   #salviamo la colonna con header data_2 come una lista
+#list_q_1 = df_error_and_data['data_6'].tolist()
+
+
+3) se usiamo control_loop_1_y.launch attaccato al motore a dx (che comanda su-giù) ci serve
+
+#list_cam_y = df_error_and_data['data_3'].tolist()   #salviamo la colonna con header data_2 come una lista
+#list_q_2 = df_error_and_data['data_7'].tolist()
+
+
+-se nel nome del file appare up and down allora siamo nel caso 2, se appare left and right allora siamo nel caso 1
+
+-durante tutte le registrazioni la telecamera di solito pubblica intorno ai 25 Hz (anche se da datasheet danno 30Hz)
+
+
+ATTENZIONE
+
+-rec1_up_and_down è corta... circa 10000 campioni... allora non abbiamo fatto 50 cicli di sicuro in questa
+
+-rec10 è più lunga
+
+NB
+
+quando non vi è alcun ccerchio rilevato cv pubblica su detecting point 
+
+points.data = [1000.0, 0.0, 0.0, t.secs, t.nsecs] # [x y radius seconds nanoseconds]
+
+quindi se analizziamo cam x dovremo porre 
+
+ if(list_cam_x[i+1]!=1000 and (list_t_sec[i]!=list_t_sec[i+1] or list_t_nsec[i]!=list_t_nsec[i+1]))
+
+
+se analizziamo cam y dovremo porre
+
+ if(list_cam_y[i+1]!=0 and (list_t_sec[i]!=list_t_sec[i+1] or list_t_nsec[i]!=list_t_nsec[i+1]))
+
+
+Nelle versioni del 2022 ho sistemato e posto 
+
+quando non vi è alcun ccerchio rilevato cv pubblica su detecting point 
+
+points.data = [1000.0, 1000.0, 0.0, t.secs, t.nsecs] # [x y radius seconds nanoseconds]
+
+
+

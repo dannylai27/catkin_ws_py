@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+ 
+   <node
+        pkg="rosserial_python"
+        type="serial_node.py"
+        name="Arduino_controller"
+        args="/dev/ttyACM0"
+   ></node>
+
+   <node
+        pkg="rosserial_python"
+        type="serial_node.py"
+        name="Arduino_encoder"
+        args="/dev/ttyACM1"
+   ></node>
+   
+   
+   <node
+        pkg="rosserial_python"
+        type="serial_node.py"
+        name="Arduino_linear_stage"
+        args="/dev/ttyACM2"
+   ></node>
+
+   
+</launch>

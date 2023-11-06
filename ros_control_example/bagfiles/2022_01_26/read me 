@@ -1,0 +1,106 @@
+-2022/01/26 we record data using the file launch control_loop_1
+
+-we uploaded on arduindo the code Arduino_code_1.ino
+
+-we didn' t run the node of the high level controller (we used the open loop)
+
+-once the recording was started we ran sss_square_wave_40_hz.py 
+
+-we publish at 40 Hz position (q1), PID will force the angle we set
+
+- utilizziamo un' onda quadra che parte da 0 rad poi passa ad A rad per T secondi poi salta a -A per altri T secondi e ripete A/-A per K volte, fatto cio' ritorna fissa a 0 rad
+
+we use a square wave of amplitude A/-A and period 2T (T half period), K is the number of cycles
+
+
+ad ogni nuova registrazione spegnevo ros e rilanciavo tutto da zero (oggi lo ho fatto a volte si a volte no
+
+ELENCO FILES (FILES LIST)
+
+			2T (period)				A (amplitude)		K
+
+rec_1			20 s					0.7			10 times
+rec_1_1			20 s					0.7			10 times
+
+rec_2			10 s					0.7			10 times
+rec_2_1			10 s					0.7			10 times
+
+rec_3			4 s					0.7			10 times
+rec_3_1			4 s					0.7			10 times
+
+rec_4			2 s					0.7			10 times
+rec_4_1			2 s					0.7			10 times
+
+rec_5			1 s					0.7			10 times
+rec_5_1			"					"			"
+rec_5_2			"					"			"
+rec_5_3			"					"			"
+rec_5_4			"					"			"
+
+rec_x_x_1		These 2 recordings are made changing the frequency during time
+rec_x_x_2               There are 25 cycles where: 
+
+cycle from 0 to 5 at 2T=20s 
+cycle from 5 to 10 at 2T=10s 
+cycle from 10 to 15 at 2T=4s 
+cycle from 15 to 20 at 2T=2s 
+cycle from 20 to 25 at 2T=20s 
+
+rec_x_x_3		20					0.7			10 times
+rec_x_x_4		20					0.7			10 times
+
+NB.
+
+CONSIDERATIONS
+
+When we reach recording 4 and 5 the period is too small and the robot is not able to reach the 0.7/-0.7 positions
+
+With 2T =1s in some recordings the robot had a very big overshoot reaching more than 1 rad (when it happened the target went out of the camera field of view), only 2 times and we do not know why
+
+We kept the target at a fixed distance with respect to the robot, but switching on and of ROS the zero of the angle reference system might change since the encoder are incremental and not absolute
+
+I tried to center the target in the image, then switching off ros and restarting it in order to try to have the same zero for the angles but this doesn't assure it since it is made by eye and the camera might be in the same position, but the cable might be pushed differently (they can shift a bit)
+
+I tried to record the rec_x_x without switching of the Ros environment from recording rec_x in order to have the same zero of the angle, but in rec_x_x the target goes out of the scope of the camera in the middle of the recording for both the rec_x_x files
+
+HINTS
+
+In these files we saved
+
+err_data.data = [pos_in_x,pos_in_y,cam_x,cam_y,error_x,error_y,q_1,q_2,t_sec,t_nsec]
+
+
+
+se usiamo control_loop_1.launch attaccato al motore in basso (che comanda dx-sx) ci serve
+
+#list_cam_x = df_error_and_data['data_2'].tolist()   #salviamo la colonna con header data_2 come una lista
+#list_q_1 = df_error_and_data['data_6'].tolist()
+
+
+se usiamo control_loop_1.launch ma attaccato al motore a dx (che comanda su-giù) ci serve
+
+#list_cam_y = df_error_and_data['data_3'].tolist()   #salviamo la colonna con header data_2 come una lista
+#list_q_1 = df_error_and_data['data_6'].tolist()
+
+
+se usiamo control_loop_1_y.launch attaccato al motore a dx (che comanda su-giù) ci serve
+
+#list_cam_y = df_error_and_data['data_3'].tolist()   #salviamo la colonna con header data_2 come una lista
+#list_q_2 = df_error_and_data['data_7'].tolist()
+
+
+PROBLEMI
+
+-durante la registrazione 1 ad un certo punto il robot è impazzito ed ho dovuto sospendere
+-durante tutte le registrazioni vi sono stati problemi con la telecamera, di solito pubblicava intorno ai 25 Hz (anche se da datasheet danno 30Hz), oggi partiva da 20 Hz per poi decrescere a 15 Hz ed alcune volte sembrava esservi del ritardo e in alcuni momemti ros non rilevava alcun messaggio pubblicato dal nodo della telecamera 
+
+
+
+
+TUTTI I FILE SONO PIENI DI 00000000000000000000000000000000
+NON VI È NULLA, PROBABILMENTE QUALCHE PROBLEMA NEI CODICI
+
+N.B. se succede questo occhio al synchronizer filter, non fa sottoscrivere nulla se non arrivano dati su uo dei topic al quale uno dei subcribers che abbiamo inserito nel filtro non riceve qualcosa
+
+I dati quindi sono sincronizzati, solo che noi qui stiamo pubblicando con un publisher a 40 Hz e dato che usiamo il filtro credo che tutti i dati vengano aggiornati quando qualcosa di nuovo arriva su tutti i topic, quindi i dati verranno aggiornati tutti insieme ad una frequenza circa pari a quella della camera (oscilla tra 15 e 25 hz). Avremo quindi delle linee che si ripetono 
+

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+
+   <node
+        pkg="joy"
+        type="sync_pub_sub.py"
+        name="sync_node"
+   ></node>
+
+   <node
+        pkg="rosbag"
+        type="record"
+        name="rosbag_record_diag"
+        args="record -O /home/cflai/catkin_ws_py/bag_file/VS_exp/x_axis_24082022/left_side_a350_T_7_fc_0_15_tc_02_r_6.bag --duration=7 -a"
+   ></node>
+
+
+   <node
+        pkg="joy"
+        type="Flexy_auto_vel_control.py"
+        name="auto_control"
+   ></node>
+   
+
+   
+   
+</launch>

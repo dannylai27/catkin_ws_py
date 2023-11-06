@@ -1,0 +1,30 @@
+joint_limits:
+    joint1:
+      has_position_limits: true
+      min_position: -3.4
+      max_position: 3.4
+      has_velocity_limits: true
+      max_velocity: 0.5
+      has_acceleration_limits: false
+      max_acceleration: 0.0
+      has_jerk_limits: false
+      max_jerk: 0
+      has_effort_limits: true
+      max_effort: 255
+      min_effort: -255
+
+# we specify the name of the joint we are considering and we add the parameters under it
+    joint2:
+      has_position_limits: true
+      min_position: -3.4
+      max_position: 3.4
+      has_velocity_limits: true
+      max_velocity: 0.5
+      has_acceleration_limits: false
+      max_acceleration: 0.0
+      has_jerk_limits: false
+      max_jerk: 0
+      has_effort_limits: true
+      max_effort: 255
+      min_effort: -255
+
