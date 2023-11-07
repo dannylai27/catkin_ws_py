@@ -14,7 +14,7 @@
 """
 
 import rospy
-from std_msgs.msg import Float64
+from std_msgs.msg import Float64, Bool
 from geometry_msgs.msg import PointStamped
 
 
@@ -67,7 +67,7 @@ class RecordedDataFlexy:
 
 
 global pub_target_centroid, pub_setpoint_M1, pub_setpoint_M2, \
-    pub_encoder_M1, pub_encoder_M2
+    pub_encoder_M1, pub_encoder_M2, pub_func_flag
 encoder_M1_sync = Float64()
 encoder_M1_sync.data = 0.0
 encoder_M2_sync = Float64()
@@ -76,6 +76,9 @@ setpoint_M1_sync = Float64()
 setpoint_M1_sync.data = 0.0
 setpoint_M2_sync = Float64()
 setpoint_M2_sync.data = 0.0
+func_flag_sync = Bool()
+func_flag_sync.data = False
+
 a = PointStamped()
 DataRecorded = RecordedDataFlexy()
 
@@ -94,6 +97,7 @@ def callback_syn(data):
     pub_setpoint_M2.publish(setpoint_M2_sync)
     pub_encoder_M1.publish(encoder_M1_sync)
     pub_encoder_M2.publish(encoder_M2_sync)
+    pub_func_flag.publish(func_flag_sync)
     Data = SyncDataFlexy(data.point.x, data.point.y, encoder_M1_sync.data, encoder_M2_sync.data,
                          time_stamp2time(data))
     DataRecorded.append(Data)
@@ -118,6 +122,11 @@ def callback_save_4(data):
     global setpoint_M2_sync
     setpoint_M2_sync.data = data.data
 
+def callback_save_5(data):
+    global func_flag_sync
+    func_flag_sync.data = data.data
+
+
 
 def listener():
     global pub_target_centroid, pub_setpoint_M1, pub_setpoint_M2, pub_encoder_M1, pub_encoder_M2
@@ -133,11 +142,14 @@ def listener():
     pub_encoder_M1 = rospy.Publisher('/sync/motor_encoder_M1', Float64, queue_size=2)
     pub_setpoint_M2 = rospy.Publisher('/sync/setpoint_M2', Float64, queue_size=2)
     pub_encoder_M2 = rospy.Publisher('/sync/motor_encoder_M2', Float64, queue_size=2)
+    pub_func_flag = rospy.Publisher('/sync/func_enable_flag', Bool, queue_size=2)
+
     rospy.Subscriber("/target_centroid", PointStamped, callback_syn)
     rospy.Subscriber("/motor_encoder_M1", Float64, callback_save)
     rospy.Subscriber("/setpoint_M1", Float64, callback_save_2)
     rospy.Subscriber("/motor_encoder_M2", Float64, callback_save_3)
     rospy.Subscriber("/setpoint_M2", Float64, callback_save_4)
+    rospy.Subscriber("/func_enable_flag", Bool, callback_save_5)
     # TODO: build a try/except to guarantee all the subscriber are getting new messages
     while not rospy.is_shutdown():
         # print('hi')

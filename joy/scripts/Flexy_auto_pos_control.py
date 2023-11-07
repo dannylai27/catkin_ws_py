@@ -9,9 +9,11 @@
 
 import rospy
 from math import cos, sin, pi, exp
-from std_msgs.msg import Float64
+from std_msgs.msg import Float64, Bool
 
-
+timer_limit = 10
+FuncFlag = Bool()
+FuncFlag.data = False
 class FlexyRobotEncoders:
     def __init__(self):
         self.M1 = Float64()
@@ -29,28 +31,38 @@ def auto_set_pos_publisher():
     r = rospy.Rate(60)  # TODO: Find the proper rate in previous scripts
     pub_M1 = rospy.Publisher('/setpoint_M1', Float64, queue_size=0)
     pub_M2 = rospy.Publisher('/setpoint_M2', Float64, queue_size=0)
+    pub_func_flag = rospy.Publisher('/func_enable_flag', Bool, queue_size=0)
 
     rospy.sleep(1)  # sleep to wait other nodes initializing
     init_time = rospy.get_time()  # init_time is used to calculate the f(t)
     Encoders = FlexyRobotEncoders()
+
     while not rospy.is_shutdown():
         now = rospy.get_time()  # starts of a new loop
         ros_time = now - init_time  # 'ros_time' is the time in f(t)
-        Encoders.M1.data = func_gen(ros_time, amp=100, period=10)
+        Encoders.M1.data, FuncFlag.data = func_gen(ros_time, amp=250, period=3)
         pub_M1.publish(Encoders.M1)
-        pub_M2.publish(Encoders.M2)
+        pub_func_flag.publish(FuncFlag)
+        # pub_M2.publish(Encoders.M2)
+        if ros_time > timer_limit + 1:
+            break
         r.sleep()
 
 
-def func_gen(ros_time, period=1, amp=1, function="sin"):
-    if function == "cos":
-        y = amp * cos(2 * pi * ros_time / period)
-    elif function == "sin":
-        y = amp * sin(2 * pi * ros_time / period)
-    else:
+def func_gen(ros_time, period=1, amp=3, function="sin"):
+    if ros_time > timer_limit:
+        flag = False
         y = 0
+    else:
+        flag = True
+        if function == "cos":
+            y = amp * cos(2 * pi * ros_time / period)
+        elif function == "sin":
+            y = amp * sin(2 * pi * ros_time / period)
+        else:
+            y = 0
 
-    return y
+    return y, flag
 
 
 if __name__ == '__main__':

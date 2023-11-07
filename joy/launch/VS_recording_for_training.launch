@@ -11,7 +11,7 @@
         pkg="rosbag"
         type="record"
         name="rosbag_record_diag"
-        args="record -O /home/cflai/catkin_ws_py/bag_file/2023_VS_exp/test/test1.bag --duration=10 -a"
+        args="record -O /home/cflai/catkin_ws_py/bag_file/2023_VS_exp/test/test2.bag --duration=8 -a"
    ></node>
 
 
