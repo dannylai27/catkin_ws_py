@@ -19,6 +19,9 @@
 # y_mean 125.24811772435594 y_std 1.7555774364242558
 
 ######################################################
+
+print('test')
+
 import os
 import rospy
 from std_msgs.msg import Float64

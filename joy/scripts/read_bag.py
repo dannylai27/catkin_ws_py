@@ -9,7 +9,6 @@ import tensorflow as tf
 
 
 class ExpResult:
-
     def __init__(self, f_folder, f_name):
         self.encoders_norm = None
         self.target_y_filter = None
