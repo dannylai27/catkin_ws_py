@@ -24,6 +24,7 @@ class SyncDataLSTM:
         self.target_x_norm = None
         self.target_y_norm = None
         self.encoders_norm = None
+        self.func_flag = None
         # temp = f_name.split('_')
         # print(temp)
         # self.label = temp[5] + '_' + temp[6] + temp[7]
@@ -33,11 +34,12 @@ class SyncDataLSTM:
         # TODO: it is important to sort out the right topic for this version.
         motor_M1_sync = b.message_by_topic('/sync/motor_encoder_M1')
         motor_M2_sync = b.message_by_topic('/sync/motor_encoder_M2')
-
         target_centroid_sync = b.message_by_topic('/sync/target_centroid')
+        func_flag_sync = b.message_by_topic('/sync/func_enable_flag')
         df_motor_M1_sync = pd.read_csv(motor_M1_sync)
         df_motor_M2_sync = pd.read_csv(motor_M2_sync)
         df_target_centroid_sync = pd.read_csv(target_centroid_sync)
+        df_func_flag_sync = pd.read_csv(func_flag_sync)
 
         time_stamp = df_motor_M1_sync["Time"].tolist()
         time_stamp = np.array(time_stamp)
@@ -49,6 +51,8 @@ class SyncDataLSTM:
         target_x = np.array(target_x)
         target_y = df_target_centroid_sync["point.y"].tolist()
         target_y = np.array(target_y)
+        func_flag = df_func_flag_sync["data"].tolist()
+        func_flag = np.array(func_flag)
 
 
         # This is to take off those points which are not synchornized in the end of array.
@@ -63,36 +67,16 @@ class SyncDataLSTM:
             encoder_M1 = encoder_M1[n:]
             print('trim data:', self.label)
 
-        # TODO: I need to think another method to clean the data. I don't have vel array anymore.
-        ##################################################################################################
-        # perform data cleaning, to avoid training with dataset with zero movement:
-        # Data points are removed based on velocity of the motors, if the motor is not moving at time t,
-        # the corresponding encoder points and target points are removed.
-        # print('before cleaning, len of target:', len(encoder_M1), len(target_x))
-        # if sum([i for i in vel_array_sync == 0]) > 4:
-        #     self.zeros_len = sum([i for i in vel_array_sync == 0]) - 3
-        #     self.time_stamp = time_stamp[0:-self.zeros_len]
-        #     self.encoder_M1 = encoder_M1[0:-self.zeros_len]
-        #     self.target_x = target_x[0:-self.zeros_len]
-        #     self.target_y = target_y[0:-self.zeros_len]
-        #     self.vel_array_sync = vel_array_sync[0:-self.zeros_len]
-        #     print('after cleaning data, len of target:', len(self.encoder_M1), len(self.target_x))
-        # else:
-        #     self.time_stamp = time_stamp
-        #     self.encoder_M1 = encoder_M1
-        #     self.target_x = target_x
-        #     self.target_y = target_y
-        #     self.vel_array_sync = vel_array_sync
-        #     print('len of target:', self.encoder_M1, self.target_x)
-        ##################################################################################################
+        # perform data cleaning, to avoid training with dataset with:
+        # using flag to avoid too early recording / too late recording when using bag record.
+        self.time_stamp = time_stamp[func_flag]
+        self.encoder_M1 = encoder_M1[func_flag]
+        self.encoder_M2 = encoder_M2[func_flag]
+        self.target_x = target_x[func_flag]
+        self.target_y = target_y[func_flag]
+        self.len = len(self.time_stamp)
+        print(len(time_stamp) - self.len, ' data points are removed')
 
-        # Currently no cleaning method for data
-        self.time_stamp = time_stamp
-        self.encoder_M1 = encoder_M1
-        self.encoder_M2 = encoder_M2
-        self.target_x = target_x
-        self.target_y = target_y
-        self.len = len(time_stamp)
 
     # TODO: temporarily I disable the  plot function as the file name is not determined yet.
     ##################################################################################################
@@ -142,8 +126,8 @@ def load_data_from_bag(file_dir, file_name):
 
 
 if __name__ == "__main__":
-    training_file = 'bag_with_all_shits.bag'
-    validation_file = 'bag_with_all_shits.bag'
+    training_file = 'bag_with_less_shits1.bag'
+    validation_file = 'bag_with_less_shits2.bag'
     file_directory = '/home/cflai/catkin_ws_py/src/joy/scripts/LSTM_training/bag/'
     training_option = 'one_feature'
     width = 16
@@ -183,3 +167,36 @@ if __name__ == "__main__":
                    validation_data=(features_validation, labels_validation))
 
     LSTM_model.save(file_directory + save_model_name)
+    prediction_LSTM = LSTM_model.predict(features)
+
+
+    # This is the plotting section:
+    fig, axs = plt.subplots(1, 2)
+    if training_option == ('one_feature' or 'two_features'):
+        a = 0
+        b = 100
+        axs[0].plot(np.squeeze(prediction_LSTM[a:a + b]), marker='x')
+        axs[0].plot(np.squeeze(labels[a:a + b]), marker='o')
+        axs[1].plot(encoder_norm[a:a + b])
+        axs[1].plot(target_x_norm[a:a + b])
+
+        plt.legend()
+        plt.show()
+
+    elif training_option == 'MM_output':
+        def plot_MM(n):
+            fig2, ax = plt.subplots(1, 4)
+
+            for i in range(4):
+                pre = np.transpose(features[n + 20 * i])
+                fut = np.transpose(prediction_LSTM[n + 20 * i])
+                gt = np.transpose(labels[n + 20 * i])
+                ax[i].plot(pre[0], pre[1], marker='o')
+                ax[i].plot(fut[0], fut[1], marker='x')
+                ax[i].plot(gt[0], gt[1], marker='^')
+
+            plt.legend()
+            plt.show()
+
+            return
+        plot_MM(120)

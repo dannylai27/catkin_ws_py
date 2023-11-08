@@ -62,7 +62,7 @@ def sigmoid(x):
 if __name__ == "__main__":
     # model_weight_h5 = 'LSTM_training_dataset_05102022_MM_output_cell_64_width_8_t_4_old.h5'
     model_weight_h5 = 'LSTM_training_dataset_28102022_MM_output_cell_32_width_12_t_4.h5'
-    model = load_model(model_weight_h5, custom_objects={"customized_tanh": customized_tanh})
+    model = load_model('./LSTM_training/LSTM_models_h5/' + model_weight_h5, custom_objects={"customized_tanh": customized_tanh})
     model.summary()
 
     # file_folder = '/home/cflai/catkin_ws_py/bag_file/VS_exp/'
@@ -98,6 +98,7 @@ if __name__ == "__main__":
                                                             label_width=output_dim)
         print('test_MM_SUCCCESS')
     else:
+        print(model_weight_h5.split('_')[4])
         raise Exception('feature_dim not defined yet')
 
     prediction_LSTM = model.predict(features)

@@ -129,7 +129,7 @@ def callback_save_5(data):
 
 
 def listener():
-    global pub_target_centroid, pub_setpoint_M1, pub_setpoint_M2, pub_encoder_M1, pub_encoder_M2
+    global pub_target_centroid, pub_setpoint_M1, pub_setpoint_M2, pub_encoder_M1, pub_encoder_M2, pub_func_flag
     # In ROS, nodes are uniquely named. If two nodes with the same
     # name are launched, the previous one is kicked off. The
     # anonymous=True flag means that rospy will choose a unique

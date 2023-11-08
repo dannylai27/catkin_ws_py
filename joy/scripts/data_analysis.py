@@ -92,8 +92,8 @@ if __name__ == "__main__":
 
     fig, axs = plt.subplots(1, 2)
     if training_option == ('one_feature' or 'two_features'):
-        a = 1200
-        b = 400
+        a = 0
+        b = 20
         axs[0].plot(np.squeeze(prediction_LSTM[a:a + b]), marker='x')
         axs[0].plot(np.squeeze(labels[a:a + b]), marker='o')
         axs[1].plot(encoder_norm[a:a + b])
